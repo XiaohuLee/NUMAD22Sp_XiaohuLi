@@ -20,8 +20,8 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     private void changeText() {
-        final String[] letters = {"A", "B", "C", "D", "E", "F"};
-        final TextView changeText = (TextView) findViewById(R.id.textView7);
+        final String[] letters = {"Pressed: A", "Pressed: B", "Pressed: C", "Pressed: D", "Pressed: E", "Pressed: F"};
+        final TextView changeText = (TextView) findViewById(R.id.textView2);
         Button Button_a = (Button) findViewById(R.id.button_a);
         Button Button_b = (Button) findViewById(R.id.button_b);
         Button Button_c = (Button) findViewById(R.id.button_c);
