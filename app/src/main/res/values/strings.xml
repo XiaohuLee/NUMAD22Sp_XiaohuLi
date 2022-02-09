@@ -6,4 +6,11 @@
     <string name="D">D</string>
     <string name="E">E</string>
     <string name="F">F</string>
+    <string name="nameNEmail">Xiaohu Li li.xiaohu3@northeastern.edu</string>
+    <string name="LC">Link Collector</string>
+    <string name="dialog_fire_missiles">missiles</string>
+    <string name="fire">fire</string>
+    <string name="cancel">cancel</string>
+    <string name="name">Name</string>
+    <string name="URL">URL</string>
 </resources>
