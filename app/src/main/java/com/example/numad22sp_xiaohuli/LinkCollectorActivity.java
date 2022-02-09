@@ -7,8 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +20,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-public class MainActivity4 extends AppCompatActivity {
+public class LinkCollectorActivity extends AppCompatActivity {
     //Creating the essential parts needed for a Recycler view to work: RecyclerView, Adapter, LayoutManager
     private ArrayList<ItemCard> itemList = new ArrayList<>();
-    ;
-
     private RecyclerView recyclerView;
     private RviewAdapter rviewAdapter;
     private RecyclerView.LayoutManager rLayoutManger;
     private FloatingActionButton addButton;
-    //private MyDialogFragment myDialogFragment;
+    private EditText inputName;
+    private EditText inputUrl;
 
 
     private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
@@ -39,19 +42,16 @@ public class MainActivity4 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main4);
+        setContentView(R.layout.activity_link_collector);
 
-        init(savedInstanceState);
+        //init(savedInstanceState);
+        createRecyclerView();
 
         addButton = findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int pos = 0;
-                //dialog!
-
                 dialog();
-                addItem(pos, "name", "url");
             }
         });
 
@@ -64,7 +64,7 @@ public class MainActivity4 extends AppCompatActivity {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                Toast.makeText(MainActivity4.this, "Delete an item", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LinkCollectorActivity.this, "Delete an item", Toast.LENGTH_SHORT).show();
                 int position = viewHolder.getLayoutPosition();
                 itemList.remove(position);
 
@@ -89,51 +89,12 @@ public class MainActivity4 extends AppCompatActivity {
         for (int i = 0; i < size; i++) {
             // put itemName information into instance
             outState.putString(KEY_OF_INSTANCE + i + "1", itemList.get(i).getItemName());
-            // put itemDesc information into instance
-            outState.putString(KEY_OF_INSTANCE + i + "2", itemList.get(i).getItemDesc());
-            // put isChecked information into instance
+            // put itemUrl information into instance
+            outState.putString(KEY_OF_INSTANCE + i + "2", itemList.get(i).getItemUrl());
+            // put isClicked information into instance
             outState.putBoolean(KEY_OF_INSTANCE + i + "3", itemList.get(i).getStatus());
         }
         super.onSaveInstanceState(outState);
-
-    }
-
-    private void init(Bundle savedInstanceState) {
-
-        initialItemData(savedInstanceState);
-        createRecyclerView();
-    }
-
-    private void initialItemData(Bundle savedInstanceState) {
-
-        // Not the first time to open this Activity
-        if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
-            if (itemList == null || itemList.size() == 0) {
-
-                int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
-
-                // Retrieve keys we stored in the instance
-                for (int i = 0; i < size; i++) {
-
-                    String itemName = savedInstanceState.getString(KEY_OF_INSTANCE + i + "1");
-                    String itemDesc = savedInstanceState.getString(KEY_OF_INSTANCE + i + "2");
-                    boolean isChecked = savedInstanceState.getBoolean(KEY_OF_INSTANCE + i + "3");
-
-                    // We need to make sure names such as "XXX(checked)" will not duplicate
-                    // Use a tricky way to solve this problem, not the best though
-                    if (isChecked) {
-                        itemName = itemName.substring(0, itemName.lastIndexOf("("));
-                    }
-                    ItemCard itemCard = new ItemCard(itemName, itemDesc, isChecked);
-
-                    itemList.add(itemCard);
-                }
-            }
-        }
-        // The first time to opne this Activity
-        else {
-
-        }
 
     }
 
@@ -151,52 +112,69 @@ public class MainActivity4 extends AppCompatActivity {
             public void onItemClick(int position) {
                 //attributions bond to the item has been changed
                 itemList.get(position).onItemClick(position);
-
+                if (itemList.get(position).getStatus()) {
+                    try {
+                        String url;
+                        url = itemList.get(position).getItemUrl();
+                        url = urlHelper(url);
+                        Intent urlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(urlIntent);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(LinkCollectorActivity.this, "Failed to web browser.",  Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                }
                 rviewAdapter.notifyItemChanged(position);
             }
 
-            @Override
-            public void onCheckBoxClick(int position) {
-                //attributions bond to the item has been changed
-                itemList.get(position).onCheckBoxClick(position);
-
-                rviewAdapter.notifyItemChanged(position);
-            }
         };
         rviewAdapter.setOnItemClickListener(itemClickListener);
 
         recyclerView.setAdapter(rviewAdapter);
         recyclerView.setLayoutManager(rLayoutManger);
-
-
     }
 
     private void addItem(int position, String name, String url) {
 
         itemList.add(position, new ItemCard(name, url, false));
-        Toast.makeText(MainActivity4.this, "Add an item", Toast.LENGTH_SHORT).show();
+        Snackbar snackbar = Snackbar.make(recyclerView,"Add item successfully!",Snackbar.LENGTH_SHORT);
+        snackbar.show();
 
         rviewAdapter.notifyItemInserted(position);
     }
 
     protected void dialog() {
+
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.dialog,
                 (ViewGroup) findViewById(R.id.dialog));
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity4.this);
-        //builder.setMessage("Are you sure to exit?");
+        AlertDialog.Builder builder = new AlertDialog.Builder(LinkCollectorActivity.this);
+        inputName = (EditText) layout.findViewById(R.id.etname);
+        inputUrl = (EditText) layout.findViewById(R.id.eturl);
 
-
-        builder.setTitle("Set the name and the email");
+        builder.setTitle("Set URL and corresponding name");
         builder.setView(layout);
 
         builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                int pos = 0;
+                //!!!!!
+                String url;
+                url = inputUrl.getText().toString();
 
-                //MainActivity4.this.finish();
+                url = urlHelper(url);
+
+                if (Patterns.WEB_URL.matcher(url).matches()) {
+                    //valid url
+                    addItem(pos, inputName.getText().toString(), inputUrl.getText().toString());
+                } else {
+                    //invalid url
+                    Snackbar snackbar = Snackbar.make(recyclerView,"URL is invalid, please re-enter an URL.",Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                }
+                dialog.dismiss();
             }
         });
 
@@ -207,7 +185,14 @@ public class MainActivity4 extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
         builder.create().show();
+    }
+
+    private String urlHelper(String url) {
+        //maybe change url?
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "http://" + url;
+        }
+        return  url;
     }
 }

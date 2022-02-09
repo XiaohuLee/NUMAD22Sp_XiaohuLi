@@ -33,7 +33,7 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder> {
         ItemCard currentItem = itemList.get(position);
 
         holder.itemName.setText(currentItem.getItemName());
-        holder.itemDesc.setText(currentItem.getItemDesc());
+        holder.itemUrl.setText(currentItem.getItemUrl());
 
     }
 

@@ -10,13 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NUMAD22Sp_XiaohuLi">
         <activity
-            android:name=".MainActivity4"
+            android:name=".LinkCollectorActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity3"
+            android:name=".AboutMeActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
+            android:name=".SixButtonsActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
