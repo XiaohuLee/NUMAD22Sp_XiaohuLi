@@ -35,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
                 openLinkCollectorActivity();
             }
         });
+
+        final Button button_lo = findViewById(R.id.button_locator);
+        button_lo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                openLocatorActivity();
+            }
+        });
     }
     public void openSixButtonsActivity() {
         Intent intent = new Intent(this, SixButtonsActivity.class);
@@ -47,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void openLinkCollectorActivity() {
         Intent intent = new Intent(this, LinkCollectorActivity.class);
+        startActivity(intent);
+    }
+
+    public void openLocatorActivity() {
+        Intent intent = new Intent(this, LocatorActivity.class);
         startActivity(intent);
     }
 

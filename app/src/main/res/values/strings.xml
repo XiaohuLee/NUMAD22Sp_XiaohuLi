@@ -11,4 +11,9 @@
     <string name="cancel">cancel</string>
     <string name="name">Name</string>
     <string name="URL">URL</string>
+    <string name="locator">Locator</string>
+    <string name="Clicky">Clicky</string>
+    <string name="AM">About Me</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
 </resources>
