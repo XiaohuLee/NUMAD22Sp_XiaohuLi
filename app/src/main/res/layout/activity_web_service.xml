@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/URL_editText"
-        android:text="http://api.weatherstack.com/current?access_key=269e409b6a262906a1a44f04e27d3f48&amp;query=New%20York"/>
+        android:hint="City Name"
+        android:text="New York"/>
 
     <Button
         android:layout_width="match_parent"
@@ -96,6 +97,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Visibility: " />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"/>
 
 
 </LinearLayout>

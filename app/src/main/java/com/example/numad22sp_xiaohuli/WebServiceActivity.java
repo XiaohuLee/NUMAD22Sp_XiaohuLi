@@ -2,11 +2,13 @@ package com.example.numad22sp_xiaohuli;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ public class WebServiceActivity extends AppCompatActivity {
 
     private EditText mURLEditText;
     private TextView mTitleTextView;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +36,14 @@ public class WebServiceActivity extends AppCompatActivity {
 
         mURLEditText = (EditText)findViewById(R.id.URL_editText);
         mTitleTextView = (TextView)findViewById(R.id.result_textview);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
     }
 
     public void callWebserviceButtonHandler(View view){
         PingWebServiceTask task = new PingWebServiceTask();
         try {
-            String url = NetworkUtil.validInput(mURLEditText.getText().toString());
+            String url = NetworkUtil.validInput("http://api.weatherstack.com/current?access_key=269e409b6a262906a1a44f04e27d3f48&query="+ mURLEditText.getText().toString());
             task.execute(url); // This is a security risk.  Don't let your user enter the URL in a real app.
         } catch (NetworkUtil.MyException e) {
             Toast.makeText(getApplication(),e.toString(),Toast.LENGTH_SHORT).show();
@@ -53,6 +57,8 @@ public class WebServiceActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
+
+
             Log.i(TAG, "Making progress...");
         }
 
@@ -74,6 +80,8 @@ public class WebServiceActivity extends AppCompatActivity {
 
                 //Log.i("jTitle",jObject.getString("title"));
                 //Log.i("jBody",jObject.getString("body"));
+
+                progressBar.setIndeterminate(true);
                 return jObject;
 
             } catch (MalformedURLException e) {
@@ -111,7 +119,7 @@ public class WebServiceActivity extends AppCompatActivity {
             TextView visibility_view = (TextView) findViewById(R.id.tvVisibility);
 
             try {
-                result_view.setText(jObject.getString("current"));
+                //result_view.setText(jObject.getString("current"));
                 JSONObject jObject_location = new JSONObject(jObject.getString("location"));
                 JSONObject jObject_current = new JSONObject(jObject.getString("current"));
 
@@ -129,8 +137,11 @@ public class WebServiceActivity extends AppCompatActivity {
                 humidity_view.setText("Humidity: " + jObject_current.getString("humidity"));
                 feelsLike_view.setText("Feels Like: " + jObject_current.getString("feelslike"));
                 visibility_view.setText("Visibility: " + jObject_current.getString("visibility"));
+                Thread.sleep(3000);
+                progressBar.setIndeterminate(false);
+                progressBar.setProgress(100);
 
-            } catch (JSONException e) {
+            } catch (JSONException | InterruptedException e) {
                 result_view.setText("Something went wrong!");
             }
 
