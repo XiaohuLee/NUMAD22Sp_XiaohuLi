@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/URL_editText"
+        android:text="http://api.weatherstack.com/current?access_key=269e409b6a262906a1a44f04e27d3f48&amp;query=New%20York"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ping Web Service"
+        android:onClick="callWebserviceButtonHandler"/>
+
+    <TextView
+        android:id="@+id/result_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="false"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Location: " />
+
+    <TextView
+        android:id="@+id/tvCountry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Country: " />
+
+    <TextView
+        android:id="@+id/tvObservation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Observation Time: " />
+
+    <TextView
+        android:id="@+id/tvTemperature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Temperature: " />
+
+    <TextView
+        android:id="@+id/tvWeatherDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Weather Description: " />
+
+    <TextView
+        android:id="@+id/tvWindSpeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wind Speed: " />
+
+    <TextView
+        android:id="@+id/tvWindDegree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wind Degree: " />
+
+    <TextView
+        android:id="@+id/tvWindDir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wind Direction: " />
+
+    <TextView
+        android:id="@+id/tvPressure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pressure: " />
+
+    <TextView
+        android:id="@+id/tvHumidity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Humidity: " />
+
+    <TextView
+        android:id="@+id/tvFeelslike"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Feels Like: " />
+
+    <TextView
+        android:id="@+id/tvVisibility"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Visibility: " />
+
+
+</LinearLayout>
